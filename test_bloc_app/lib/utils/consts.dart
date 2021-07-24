@@ -1,0 +1,20 @@
+const String LANGUAGE_CODE = 'languageCode';
+const String LOCALE = 'locale';
+const String LOGIN_VIEW = '/login_view';
+const String LOGIN_FORM = '/login_form';
+const String REGISTER_FORM = '/register_form';
+const String RESTAURANT_DETAIL = '/restaurant_detail';
+const String RESTAURANT_MENU = '/restaurant_menu';
+const String RECIPE_DETAILS = '/recipe_details';
+const String ORDER_PAGE = '/order_page';
+const String MY_APP = '/my_app';
+const String HOME = '/home';
+const String GEO_MAP = '/geo_map';
+const String FAVORITES = '/favorites';
+const String FAVORITES_BOX = 'favoritesBox';
+const String ORDER_BOX = 'orderBox';
+
+const String IS_USER_LOGGED = 'is_user_logged';
+const String APP_STATE_KEY = 'app_state';
+const String PHONE_NUMBER = 'phone_number';
+const String USER_EMAIL = 'user_email';
