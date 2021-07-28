@@ -27,19 +27,10 @@ class MenuDataProvider {
     return menuModel;
   }
 
-  Future<List<MenuModel>> _loadDataFromHive() async {
-    return Hive.box<MenuModel>(ORDER_BOX).values.toList();
-  }
-
-  Future<bool> _getData() async {
+  Future<List<MenuModel>> getData({required List<String> categoryFilter}) async {
     _preferences = await SharedPreferences.getInstance();
     _loadedData = await _loadDataFromNetwork();
     await _applySavedSets();
-    return true;
-  }
-
-  Future<List<MenuModel>> getData({required List<String> categoryFilter}) async {
-    await _getData();
     final List<MenuModel> calculatedData = categoryFilter.isEmpty
         ? List<MenuModel>.from(_loadedData, growable: false)
         : _loadedData
@@ -69,6 +60,7 @@ class MenuDataProvider {
   }
 
   Future applyRemoveSet(int id, bool isSetAdded, double finalOrderPrice) async {
+    await _preferences.setBool('${id}_set', isSetAdded);
     await _preferences.setDouble('finalOrderPrice', finalOrderPrice);
     _loadedData[id].applyAddSet(isSetAdded: false, countSet: 0);
   }

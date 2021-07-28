@@ -81,6 +81,9 @@ class MenuBloc extends Bloc<MenuEvent, MainState> {
       final double finalPrice = state.finalPrice - item.priceSet * item.countSet;
       item = item.applyAddSet(isSetAdded: false, countSet: 0);
       newMenuList.toSet().add(item);
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      await preferences.setBool('${item.id}_set', false);
+      await preferences.setInt('${item.id}_set_count', 0);
       yield state.copyWith(
         menuList: newMenuList,
         selectorButtons: selectorButtons,
@@ -97,6 +100,9 @@ class MenuBloc extends Bloc<MenuEvent, MainState> {
         var item = state.menuList[i].applyAddSet(isSetAdded: false, countSet: 0);
         print('$i: ${item.isSetAdded}');
         newMenuList.add(item);
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        await preferences.setBool('${newMenuList[i].id}_set', false);
+        await preferences.setInt('${newMenuList[i].id}_set_count', 0);
       }
       yield state.copyWith(
         menuList: newMenuList,
