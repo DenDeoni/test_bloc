@@ -67,9 +67,6 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
       final int indexOfUpdated = newOrderList.indexWhere((element) => element.id == event.id);
       MenuModel item = newOrderList[indexOfUpdated];
       final double finalPrice = state.finalPrice - item.priceSet * item.countSet;
-      print('state.finalPrice 3: ${state.finalPrice}');
-      print('item.priceSet 3: ${item.priceSet}');
-      print('item.countSet 3: ${item.countSet}');
       newOrderList.remove(item);
       yield state.copyWith(
         listOrders: newOrderList,
@@ -93,7 +90,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
   }
 
   Future _loadData() async {
-    final List<MenuModel>data = await orderDataProvider.getData();
+    final List<MenuModel> data = await orderDataProvider.getData();
     add(DataLoadedEvent(
       data,
     ));

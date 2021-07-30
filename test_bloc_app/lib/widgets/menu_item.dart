@@ -23,7 +23,6 @@ class MenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => _recipeDetails(context),
       child: Container(
           decoration: BoxDecoration(
             boxShadow: [
@@ -51,7 +50,6 @@ class MenuItem extends StatelessWidget {
                       ObjectDescription(menuListItem.description),
                       // Buttons for orders
                       menuListItem.cook ? _buttonOrderSet(context, menuListItem) : Container(),
-                      menuListItem.dish ? _buttonOrderDish(context, menuListItem) : Container(),
                     ],
                   ),
                 ),
@@ -96,11 +94,10 @@ class MenuItem extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.3),
                 spreadRadius: 1,
                 blurRadius: 1,
-                offset: Offset(0, 0), // changes position of shadow
+                offset: Offset(0, 0),
               ),
             ],
             color: Colors.white,
-            //border: Border.all(color: AppColors.border),
             borderRadius: BorderRadius.all(Radius.circular(10.0)),
           ),
           child: Padding(
@@ -117,11 +114,11 @@ class MenuItem extends StatelessWidget {
                   padding: EdgeInsets.only(left: 8.0),
                   child: menuListItem.isSetAdded
                       ? Text(
-                          '${LocaleKeys.set_in_basket.tr()}',
+                          '${LocaleKeys.dish_in_basket.tr()}',
                           style: TextStyle(fontSize: 13, color: Colors.blueAccent),
                         )
                       : Text(
-                          '${LocaleKeys.set.tr()} ${menuListItem.priceSet} ${menuListItem.unit}',
+                          '${LocaleKeys.dish.tr()} ${menuListItem.priceSet} ${menuListItem.unit}',
                           style: TextStyle(fontSize: 13, color: Colors.blueAccent),
                         ),
                 ),
@@ -131,54 +128,5 @@ class MenuItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buttonOrderDish(context, MenuModel menuListItem) {
-    return Padding(
-      padding: EdgeInsets.only(top: 15.0),
-      child: InkWell(
-        onTap: () {},
-        child: Container(
-          height: 30,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(0, 0), // changes position of shadow
-              ),
-            ],
-            color: Color(0xFF4FA5F5),
-            //border: Border.all(color: AppColors.border),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(6.0),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/images/dish.svg',
-                  alignment: Alignment.centerLeft,
-                  width: 18,
-                  height: 18,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.0),
-                  child: Text(
-                    'Готовое блюдо: ${menuListItem.priceDish} ${menuListItem.unit}',
-                    style: TextStyle(fontSize: 13, color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  _recipeDetails(BuildContext context) {
-    Navigator.pushNamed(context, RECIPE_DETAILS);
   }
 }

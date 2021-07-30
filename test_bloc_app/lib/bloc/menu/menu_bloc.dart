@@ -51,14 +51,27 @@ class MenuBloc extends Bloc<MenuEvent, MainState> {
       await _loadData(
         categories: updatedCategories,
       );
+
+      // Data loaded
     } else if (event is DataLoadedEvent) {
       yield state.copyWith(
         menuList: menuList,
         selectorButtons: selectorButtons,
         finalPrice: finalPrice,
       );
+      // ADD SET EVENT
     } else if (event is AddSetEvent) {
       List<MenuModel> newMenuList = List<MenuModel>.from(state.menuList);
+      late String string;
+      List<String> categories = state.selectorButtons.map((element) {
+        if (element.isSelected) {
+          string = element.alias;
+        } else {
+          string = '';
+        }
+        return string;
+      }).toList();
+      categories.removeWhere((item) => item == '');
       final indexOfUpdated = newMenuList.indexWhere((element) => element.id == event.id);
       MenuModel item = newMenuList[indexOfUpdated];
       item = item.applyAddSet(
@@ -70,8 +83,10 @@ class MenuBloc extends Bloc<MenuEvent, MainState> {
         selectorButtons: state.selectorButtons,
         finalPrice: finalPrice,
       );
-      _loadData(categories: categories);
       menuDataProvider.applyAddSet(event.id, item.isSetAdded, finalPrice, item.countSet);
+      await _loadData(
+          categories:
+              categories.isEmpty ? state.selectorButtons.map((e) => e.alias).toList() : categories);
     }
     // Remove Set
     else if (event is RemoveSetEvent) {
@@ -98,7 +113,6 @@ class MenuBloc extends Bloc<MenuEvent, MainState> {
       List<MenuModel> newMenuList = List<MenuModel>.from(state.menuList);
       for (var i = 0; i < state.menuList.length; i++) {
         var item = state.menuList[i].applyAddSet(isSetAdded: false, countSet: 0);
-        print('$i: ${item.isSetAdded}');
         newMenuList.add(item);
         SharedPreferences preferences = await SharedPreferences.getInstance();
         await preferences.setBool('${newMenuList[i].id}_set', false);

@@ -6,6 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive/hive.dart';
 import 'package:injector/injector.dart';
+import 'package:test_bloc_app/bloc/menu/menu_bloc.dart';
+import 'package:test_bloc_app/bloc/order/order_bloc.dart';
 import 'package:test_bloc_app/models/menu_model.dart';
 import 'package:test_bloc_app/pages/not_found.dart';
 import 'package:test_bloc_app/pages/order_page.dart';
@@ -34,11 +36,19 @@ void main() async {
   final _prefs = await SharedPreferences.getInstance();
   await Hive.openBox<MenuModel>(ORDER_BOX);
 
-  runApp(
-    MultiRepositoryProvider(
+  runApp(MultiRepositoryProvider(
+    providers: [
+      RepositoryProvider(create: (_) => MenuDataProvider()),
+      RepositoryProvider(create: (_) => OrderDataProvider()),
+    ],
+    child: MultiBlocProvider(
       providers: [
-        RepositoryProvider(create: (_) => MenuDataProvider()),
-        RepositoryProvider(create: (_) => OrderDataProvider()),
+        BlocProvider<MenuBloc>(
+          create: (BuildContext context) => MenuBloc(MenuDataProvider()),
+        ),
+        BlocProvider<OrderBloc>(
+          create: (BuildContext context) => OrderBloc(OrderDataProvider()),
+        ),
       ],
       child: EasyLocalization(
         supportedLocales: [
@@ -52,7 +62,7 @@ void main() async {
         ),
       ),
     ),
-  );
+  ));
 }
 
 class MyApp extends StatelessWidget {

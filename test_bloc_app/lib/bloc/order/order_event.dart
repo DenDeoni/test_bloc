@@ -7,13 +7,6 @@ class DataLoadedEvent extends OrderEvent {
   DataLoadedEvent(this.data);
 }
 
-/*class AddSetEvent extends OrderEvent {
-  final int id;
-  final bool isSetAdded = true;
-
-  AddSetEvent({required this.id});
-}*/
-
 class IncrementSetEvent extends OrderEvent {
   final int id;
   IncrementSetEvent({required this.id});
